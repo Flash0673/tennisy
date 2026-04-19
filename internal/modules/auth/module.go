@@ -1,13 +1,16 @@
 package auth
 
-import "tennisy.com/mvp/internal/modules/auth/action"
+import (
+	"github.com/jackc/pgx/v5/pgxpool"
+	"tennisy.com/mvp/internal/modules/auth/action"
+)
 
 type Module struct {
 	Actions *action.Aggregator
 }
 
-func New() *Module {
+func New(pool *pgxpool.Pool) *Module {
 	return &Module{
-		Actions: action.New(),
+		Actions: action.New(pool),
 	}
 }

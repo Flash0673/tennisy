@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc"
 
 	"tennisy.com/mvp/internal/modules/auth"
@@ -31,7 +32,7 @@ type App struct {
 	modules modules
 
 	// TODO Posgres conn
-	//postgresConn
+	postgresConnPool *pgxpool.Pool
 
 	// Всякие коннекшены
 }
@@ -40,7 +41,8 @@ type App struct {
 func New(ctx context.Context) *App {
 	a := &App{}
 
-	a.initModules(ctx)
+	a.initPostgres(ctx).
+		initModules(ctx)
 
 	return a
 }
@@ -95,7 +97,7 @@ func (a *App) runPublicHTTP() {
 	router := chi.NewRouter()
 	router.Get("/", func(writer http.ResponseWriter, request *http.Request) {
 
-		res, err := a.modules.auth.Actions.Register.Do()
+		res, err := a.modules.auth.Actions.Register.Do(context.Background())
 
 		_, err = writer.Write(res)
 		if err != nil {

@@ -1,11 +1,26 @@
 package register
 
-type Action struct{}
+import (
+	"context"
 
-func New() *Action {
-	return &Action{}
+	"github.com/jackc/pgx/v5/pgxpool"
+	"tennisy.com/mvp/internal/modules/auth/action/register/dal"
+)
+
+type Action struct {
+	repo *dal.Dal
 }
 
-func (action *Action) Do() ([]byte, error) {
-	return []byte("Hello world"), nil
+func New(pool *pgxpool.Pool) *Action {
+	return &Action{
+		repo: dal.NewDal(pool),
+	}
+}
+
+func (action *Action) Do(ctx context.Context) ([]byte, error) {
+	usr, err := action.repo.Register(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return []byte(usr.String()), nil
 }

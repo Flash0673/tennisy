@@ -26,17 +26,17 @@ migration:
 
 .PHONY: migration-status ## проверка статуса миграций
 migration-status:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=${DB_HOST} port=${DB_PORT} sslmode=disable" status -dir ${MIGRATION_FOLDER}
+	goose postgres "user=${DB_USER} password=${DB_PASS} dbname=${DB_NAME} host=${DB_HOST} port=${DB_PORT} sslmode=disable" status -dir ${MIGRATION_FOLDER}
 
 .PHONY: migrations-up ## накатка миграций
 migrations-up:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=${DB_HOST} port=${DB_PORT} sslmode=disable" up -dir ${MIGRATION_FOLDER}
+	goose postgres "user=${DB_USER} password=${DB_PASS} dbname=${DB_NAME} host=${DB_HOST} port=${DB_PORT} sslmode=disable" up -dir ${MIGRATION_FOLDER}
 
 .PHONY: migrations-down ## откатка миграций на 1 назад
 migrations-down:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=${DB_HOST} port=${DB_PORT} sslmode=disable" down -dir ${MIGRATION_FOLDER}
+	goose postgres "user=${DB_USER} password=${DB_PASS} dbname=${DB_NAME} host=${DB_HOST} port=${DB_PORT} sslmode=disable" down -dir ${MIGRATION_FOLDER}
 
 
 .PHONY: migrations-reset ## откатка ВСЕХ миграций
 migrations-reset:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=${DB_HOST} port=${DB_PORT} sslmode=disable" down-to 0 -dir ${MIGRATION_FOLDER}
+	goose postgres "user=${DB_USER} password=${DB_PASS} dbname=${DB_NAME} host=${DB_HOST} port=${DB_PORT} sslmode=disable" down-to 0 -dir ${MIGRATION_FOLDER}

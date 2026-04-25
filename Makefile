@@ -1,3 +1,42 @@
+### CODE GEN
+
+LOCAL_BIN:=$(CURDIR)/bin
+
+.PRONY: bin-deps
+bin-deps:
+	GOBIN=$(LOCAL_BIN) go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+	GOBIN=$(LOCAL_BIN) go install -mod=mod google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+	GOBIN=$(LOCAL_BIN) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
+	GOBIN=$(LOCAL_BIN) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+
+.PRONY: generate
+generate:
+	mkdir -p pb/
+	protoc -I=vendor.protogen --proto_path=api \
+    	--go_out=pb \
+    	--go_opt paths=source_relative \
+    	--plugin=protoc-gen-go=bin/protoc-gen-go \
+    	--go-grpc_out=pb \
+    	--plugin=protoc-gen-go-grpc=bin/protoc-gen-go-grpc \
+    	--go-grpc_opt paths=source_relative \
+    	--grpc-gateway_out=pb \
+    	--grpc-gateway_opt paths=source_relative \
+    	--grpc-gateway_opt generate_unbound_methods=true \
+    	--plugin=protoc-gen-grpc-gateway=bin/protoc-gen-grpc-gateway \
+    	api/auth/v1/auth.proto
+
+.PRONY: vendor-proto
+vendor-proto:
+		@if [ ! -d vendor.protogen/google ]; then \
+			git clone https://github.com/googleapis/googleapis vendor.protogen/googleapis &&\
+			mkdir -p  vendor.protogen/google/ &&\
+			mv vendor.protogen/googleapis/google/api vendor.protogen/google &&\
+			rm -rf vendor.protogen/googleapis ;\
+		fi
+
+
+### MIGRATIONS
+
 DB_HOST=127.0.0.1
 DB_NAME=tennisly
 DB_USER=postgres

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package tennisy.com.mvp.api.auth.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "tennisy.com/mvp/pkg/api/auth/v1;authv1";
+
+service Auth {
+  rpc Create(CreateRequest) returns (CreateResponse) {
+    option (google.api.http) = {
+      post: "/v1/create"
+      body: "*"
+    };
+  };
+}
+
+message CreateRequest {
+  string name = 1;
+  string email = 2;
+}
+
+message CreateResponse {
+  int64 user_id = 1;
+}

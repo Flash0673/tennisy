@@ -76,7 +76,7 @@ func (x *CreateRequest) GetEmail() string {
 
 type CreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -111,11 +111,11 @@ func (*CreateResponse) Descriptor() ([]byte, []int) {
 	return file_auth_v1_auth_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateResponse) GetUserId() int64 {
+func (x *CreateResponse) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 var File_auth_v1_auth_proto protoreflect.FileDescriptor
@@ -127,7 +127,7 @@ const file_auth_v1_auth_proto_rawDesc = "" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\")\n" +
 	"\x0eCreateResponse\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId2\x80\x01\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId2\x80\x01\n" +
 	"\x04Auth\x12x\n" +
 	"\x06Create\x12*.tennisy.com.mvp.api.auth.v1.CreateRequest\x1a+.tennisy.com.mvp.api.auth.v1.CreateResponse\"\x15\x82\xd3\xe4\x93\x02\x0f:\x01*\"\n" +
 	"/v1/createB(Z&tennisy.com/mvp/pkg/api/auth/v1;authv1b\x06proto3"

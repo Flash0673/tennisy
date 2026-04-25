@@ -5,6 +5,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"tennisy.com/mvp/internal/modules/auth/action/register/dal"
+	"tennisy.com/mvp/internal/modules/auth/action/register/dto"
 )
 
 type Action struct {
@@ -17,10 +18,10 @@ func New(pool *pgxpool.Pool) *Action {
 	}
 }
 
-func (action *Action) Do(ctx context.Context) ([]byte, error) {
+func (action *Action) Do(ctx context.Context) (dto.UserRow, error) {
 	usr, err := action.repo.Register(ctx)
 	if err != nil {
-		return nil, err
+		return dto.UserRow{}, err
 	}
-	return []byte(usr.String()), nil
+	return usr, nil
 }

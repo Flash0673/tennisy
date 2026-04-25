@@ -2,18 +2,26 @@ package internal
 
 import (
 	"context"
-	"errors"
+	"log"
+	"net"
 	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
+	"sync"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/reflection"
+	authController "tennisy.com/mvp/internal/app/tennisly/auth/v1"
+	authv1 "tennisy.com/mvp/pb/auth/v1"
 
 	"tennisy.com/mvp/internal/modules/auth"
+)
+
+const (
+	grpcAddress = "localhost:8082"
+	httpAddress = "localhost:8080"
 )
 
 type modules struct {
@@ -25,13 +33,8 @@ type App struct {
 	adminServer  chi.Router
 	grpcServer   *grpc.Server
 
-	opts Options
-
-	lis listeners
-
 	modules modules
 
-	// TODO Posgres conn
 	postgresConnPool *pgxpool.Pool
 
 	// Всякие коннекшены
@@ -49,92 +52,61 @@ func New(ctx context.Context) *App {
 
 // Run переопределяет конфигурацию для запуска сервиса локально
 func (a *App) Run(ctx context.Context) {
+	wg := &sync.WaitGroup{}
+	wg.Add(2)
+	go func() {
+		defer wg.Done()
 
-	// TODO здесь запускаем приложение
+		if err := a.runGRPC(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
-	a.runPublicHTTP()
-	a.runGRPC()
+	go func() {
+		defer wg.Done()
+
+		if err := a.runPublicHTTP(ctx); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	wg.Wait()
 }
 
 // runGRPC in called in Run function
-func (a *App) runGRPC() {
-	if a.grpcServer != nil {
-		go func() {
-			if err := a.grpcServer.Serve(a.lis.grpc); err != nil {
-				// TODO log + closeer
-			}
-		}()
-		// TODO graceful shoutdown
-	}
-}
+func (a *App) runGRPC() error {
+	grpcServer := grpc.NewServer(
+		grpc.Creds(insecure.NewCredentials()),
+	)
 
-// runAdminHTTP is called in New function
-func (a *App) runAdminHTTP() {
-	adminServer := &http.Server{Handler: a.adminServer}
-	go func() {
-		if err := adminServer.Serve(a.lis.httpAdmin); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			// TODO log + closeer
-		}
-	}()
-	// TODO graceful shoutdown
+	reflection.Register(grpcServer)
+
+	authv1.RegisterAuthServer(grpcServer, authController.NewAuth(a.modules.auth))
+
+	list, err := net.Listen("tcp", grpcAddress)
+	if err != nil {
+		return err
+	}
+
+	log.Printf("gRPC server listening at %v\n", grpcAddress)
+
+	return grpcServer.Serve(list)
 }
 
 // runPublicHTTP is called in New function
-func (a *App) runPublicHTTP() {
-	// We don't need to start actual server
-	//if !a.publicHTTPEnabled() {
-	//	return
-	//}
+func (a *App) runPublicHTTP(ctx context.Context) error {
+	mux := runtime.NewServeMux()
 
-	//publicServer := &http.Server{Handler: a.publicServer}
-	//go func() {
-	//	if err := publicServer.Serve(a.lis.http); err != nil && !errors.Is(err, http.ErrServerClosed) {
-	//		// TODO log + closeer
-	//	}
-	//}()
-	//// TODO graceful shoutdown
-
-	router := chi.NewRouter()
-	router.Get("/", func(writer http.ResponseWriter, request *http.Request) {
-
-		res, err := a.modules.auth.Actions.Register.Do(context.Background())
-
-		_, err = writer.Write(res)
-		if err != nil {
-			// TODO log
-		}
-	})
-
-	done := make(chan os.Signal, 1)
-	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
-
-	srv := &http.Server{
-		Addr:    "localhost:8080",
-		Handler: router,
-		//ReadTimeout:  cfg.HTTPServer.Timeout,
-		//WriteTimeout: cfg.HTTPServer.Timeout,
-		//IdleTimeout:  cfg.HTTPServer.IdleTimeout,
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
-	go func() {
-		if err := srv.ListenAndServe(); err != nil {
-
-		}
-	}()
-
-	<-done
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	if err := srv.Shutdown(ctx); err != nil {
-		// TODO log
-
-		return
+	err := authv1.RegisterAuthHandlerFromEndpoint(ctx, mux, grpcAddress, opts)
+	if err != nil {
+		return err
 	}
 
-}
+	log.Printf("http server listening at %v\n", httpAddress)
 
-func (a *App) publicHTTPEnabled() bool {
-	return !a.opts.DisabledPublicHTTP
+	return http.ListenAndServe(httpAddress, mux)
 }

@@ -23,6 +23,8 @@ generate:
     	--grpc-gateway_opt paths=source_relative \
     	--grpc-gateway_opt generate_unbound_methods=true \
     	--plugin=protoc-gen-grpc-gateway=bin/protoc-gen-grpc-gateway \
+    	--openapiv2_out=pb --openapiv2_opt logtostderr=true \
+    	--plugin=protoc-gen-openapiv2=bin/protoc-gen-openapiv2 \
     	api/auth/v1/auth.proto
 
 .PRONY: vendor-proto

@@ -8,6 +8,7 @@ bin-deps:
 	GOBIN=$(LOCAL_BIN) go install -mod=mod google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 	GOBIN=$(LOCAL_BIN) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 	GOBIN=$(LOCAL_BIN) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+	GOBIN=$(LOCAL_BIN) go install github.com/xo/dbtpl@latest
 
 .PRONY: generate
 generate:
@@ -37,7 +38,7 @@ vendor-proto:
 		fi
 
 
-### MIGRATIONS
+### DB
 
 DB_HOST=127.0.0.1
 DB_NAME=tennisly
@@ -81,3 +82,17 @@ migrations-down:
 .PHONY: migrations-reset ## откатка ВСЕХ миграций
 migrations-reset:
 	goose postgres "user=${DB_USER} password=${DB_PASS} dbname=${DB_NAME} host=${DB_HOST} port=${DB_PORT} sslmode=disable" down-to 0 -dir ${MIGRATION_FOLDER}
+
+XO_OUTPUT_PATH=./internal/xo
+XO_TEMPLATE_PATH=./tools/xo_templates
+
+.PHONY: xo ## генерация dto базы данных
+xo:
+	rm -r $(XO_OUTPUT_PATH)
+	mkdir -p $(XO_OUTPUT_PATH)
+	xo "pgsql://$(DB_USER):$(DB_PASS)@localhost:$(DB_PORT)/$(DB_NAME)?sslmode=disable" \
+	-o $(XO_OUTPUT_PATH) --template-path $(XO_TEMPLATE_PATH) --suffix ".xo.go" --custom-type-package custom
+
+	rm $(XO_OUTPUT_PATH)/goosedbversion.xo.go
+	rm $(XO_OUTPUT_PATH)/xo_db.xo.go
+	rm $(XO_OUTPUT_PATH)/goosedbversionaudit.xo.go

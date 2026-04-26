@@ -81,6 +81,7 @@ func (a *App) runGRPC() error {
 
 	reflection.Register(grpcServer)
 
+	// Здесь регистрируем наши grpc контроллеры
 	authv1.RegisterAuthServer(grpcServer, authController.NewAuth(a.modules.auth))
 
 	list, err := net.Listen("tcp", grpcAddress)
@@ -101,6 +102,7 @@ func (a *App) runPublicHTTP(ctx context.Context) error {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
+	// Здесь регаем http ендпоинты
 	err := authv1.RegisterAuthHandlerFromEndpoint(ctx, mux, grpcAddress, opts)
 	if err != nil {
 		return err

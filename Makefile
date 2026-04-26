@@ -8,7 +8,7 @@ bin-deps:
 	GOBIN=$(LOCAL_BIN) go install -mod=mod google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 	GOBIN=$(LOCAL_BIN) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 	GOBIN=$(LOCAL_BIN) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
-	GOBIN=$(LOCAL_BIN) go install github.com/xo/dbtpl@latest
+	GOBIN=$(LOCAL_BIN) go install github.com/xo/xo@v1.0.2
 
 .PRONY: generate
 generate:
@@ -86,13 +86,16 @@ migrations-reset:
 XO_OUTPUT_PATH=./internal/xo
 XO_TEMPLATE_PATH=./tools/xo_templates
 
+.PHONY: dump-templates ## дамп темплейтов
+dump-templates:
+	./bin/dbtpl dump $(XO_TEMPLATE_PATH)
+
 .PHONY: xo ## генерация dto базы данных
 xo:
 	rm -r $(XO_OUTPUT_PATH)
 	mkdir -p $(XO_OUTPUT_PATH)
-	xo "pgsql://$(DB_USER):$(DB_PASS)@localhost:$(DB_PORT)/$(DB_NAME)?sslmode=disable" \
-	-o $(XO_OUTPUT_PATH) --template-path $(XO_TEMPLATE_PATH) --suffix ".xo.go" --custom-type-package custom
+	./bin/dbtpl schema -o $(XO_OUTPUT_PATH) --src $(XO_TEMPLATE_PATH) --schema public \
+ 	"pgsql://$(DB_USER):$(DB_PASS)@localhost:$(DB_PORT)/$(DB_NAME)?sslmode=disable"
 
-	rm $(XO_OUTPUT_PATH)/goosedbversion.xo.go
-	rm $(XO_OUTPUT_PATH)/xo_db.xo.go
-	rm $(XO_OUTPUT_PATH)/goosedbversionaudit.xo.go
+	rm $(XO_OUTPUT_PATH)/dbtpl.dbtpl.go
+	rm $(XO_OUTPUT_PATH)/goosedbversion.dbtpl.go

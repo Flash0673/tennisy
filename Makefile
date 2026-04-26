@@ -8,7 +8,7 @@ bin-deps:
 	GOBIN=$(LOCAL_BIN) go install -mod=mod google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 	GOBIN=$(LOCAL_BIN) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 	GOBIN=$(LOCAL_BIN) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
-	GOBIN=$(LOCAL_BIN) go install github.com/xo/xo@v1.0.2
+	GOBIN=$(LOCAL_BIN) go install github.com/xo/dbtpl@latest
 
 .PRONY: generate
 generate:
@@ -91,7 +91,7 @@ dump-templates:
 	./bin/dbtpl dump $(XO_TEMPLATE_PATH)
 
 .PHONY: xo ## генерация dto базы данных
-xo:
+xo: migrations-up
 	rm -r $(XO_OUTPUT_PATH)
 	mkdir -p $(XO_OUTPUT_PATH)
 	./bin/dbtpl schema -o $(XO_OUTPUT_PATH) --src $(XO_TEMPLATE_PATH) --schema public \

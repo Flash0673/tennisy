@@ -169,7 +169,7 @@ func Init(ctx context.Context, f func(xo.TemplateType)) error {
 				Type:       "string",
 				Desc:       "field tag",
 				Short:      "g",
-				Default:    `json:"{{ .SQLName }}"`,
+				Default:    `json:"{{ .SQLName }}" db:"{{ .SQLName }}"`,
 			},
 			{
 				ContextKey: ContextKey,

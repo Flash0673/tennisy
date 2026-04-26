@@ -11,11 +11,12 @@ import (
 
 // Таблица пользователей
 type User struct {
-	ID        uuid.UUID      `json:"id"`         // Уникальный идентификатор ползователя
-	Email     string         `json:"email"`      // email ползователя
-	Username  string         `json:"username"`   // username ползователя
-	FullName  sql.NullString `json:"full_name"`  // Полное имя ползователя
-	CreatedAt time.Time      `json:"created_at"` // Когда создан
-	LastLogin sql.NullTime   `json:"last_login"` // Последний вход
-	IsActive  bool           `json:"is_active"`  // Активный пользователь
+	ID           uuid.UUID      `json:"id" db:"id"`                       // Уникальный идентификатор ползователя
+	Email        string         `json:"email" db:"email"`                 // email ползователя
+	Username     string         `json:"username" db:"username"`           // username ползователя
+	PasswordHash string         `json:"password_hash" db:"password_hash"` // Зашифрованный пароль пользователя
+	FullName     sql.NullString `json:"full_name" db:"full_name"`         // Полное имя ползователя
+	CreatedAt    time.Time      `json:"created_at" db:"created_at"`       // Когда создан
+	LastLogin    sql.NullTime   `json:"last_login" db:"last_login"`       // Последний вход
+	IsActive     bool           `json:"is_active" db:"is_active"`         // Активный пользователь
 }

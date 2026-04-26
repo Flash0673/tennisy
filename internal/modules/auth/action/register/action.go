@@ -2,26 +2,32 @@ package register
 
 import (
 	"context"
+	"time"
 
-	"github.com/jackc/pgx/v5/pgxpool"
-	"tennisy.com/mvp/internal/modules/auth/action/register/dal"
+	"golang.org/x/crypto/bcrypt"
 	"tennisy.com/mvp/internal/modules/auth/action/register/dto"
+	"tennisy.com/mvp/internal/modules/auth/action/register/service/register"
+	"tennisy.com/mvp/internal/modules/auth/dal"
+	"tennisy.com/mvp/pkg/security"
+	"tennisy.com/mvp/pkg/token"
 )
 
 type Action struct {
-	repo *dal.Dal
+	register *register.Service
 }
 
-func New(pool *pgxpool.Pool) *Action {
+func New(aggregator *dal.Aggregator) *Action {
 	return &Action{
-		repo: dal.NewDal(pool),
+		register: register.New(
+			security.NewBcryptHasher(bcrypt.DefaultCost),
+			// TODO config
+			token.NewJWTService("", 24*time.Hour),
+			aggregator.User,
+			aggregator.RefreshToken,
+		),
 	}
 }
 
-func (action *Action) Do(ctx context.Context) (dto.UserRow, error) {
-	usr, err := action.repo.Register(ctx)
-	if err != nil {
-		return dto.UserRow{}, err
-	}
-	return usr, nil
+func (action *Action) Do(ctx context.Context, req dto.RegisterRequest) (*dto.TokenResponse, error) {
+	return action.register.Register(ctx, req)
 }

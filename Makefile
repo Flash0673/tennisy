@@ -9,6 +9,7 @@ bin-deps:
 	GOBIN=$(LOCAL_BIN) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 	GOBIN=$(LOCAL_BIN) go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 	GOBIN=$(LOCAL_BIN) go install github.com/xo/dbtpl@latest
+	GOBIN=$(LOCAL_BIN) go install go.uber.org/mock/mockgen@latest
 
 .PRONY: generate
 generate:

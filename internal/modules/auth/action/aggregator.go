@@ -3,6 +3,7 @@ package action
 import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"tennisy.com/mvp/internal/modules/auth/action/register"
+	"tennisy.com/mvp/internal/modules/auth/dal"
 )
 
 type Aggregator struct {
@@ -10,8 +11,9 @@ type Aggregator struct {
 	Register *register.Action
 }
 
-func New(pool *pgxpool.Pool) *Aggregator {
+func New(pool *pgxpool.Pool, dataAccessLayer *dal.Aggregator) *Aggregator {
+	_ = pool
 	return &Aggregator{
-		Register: register.New(pool),
+		Register: register.New(dataAccessLayer),
 	}
 }

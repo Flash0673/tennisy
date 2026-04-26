@@ -10,6 +10,7 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -22,28 +23,30 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type CreateRequest struct {
+type RegisterRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	UserName      string                 `protobuf:"bytes,1,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	FullName      string                 `protobuf:"bytes,2,opt,name=full_name,json=fullName,proto3" json:"full_name,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	Password      string                 `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateRequest) Reset() {
-	*x = CreateRequest{}
+func (x *RegisterRequest) Reset() {
+	*x = RegisterRequest{}
 	mi := &file_auth_v1_auth_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateRequest) String() string {
+func (x *RegisterRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateRequest) ProtoMessage() {}
+func (*RegisterRequest) ProtoMessage() {}
 
-func (x *CreateRequest) ProtoReflect() protoreflect.Message {
+func (x *RegisterRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_auth_v1_auth_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -55,46 +58,62 @@ func (x *CreateRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
-func (*CreateRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use RegisterRequest.ProtoReflect.Descriptor instead.
+func (*RegisterRequest) Descriptor() ([]byte, []int) {
 	return file_auth_v1_auth_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CreateRequest) GetName() string {
+func (x *RegisterRequest) GetUserName() string {
 	if x != nil {
-		return x.Name
+		return x.UserName
 	}
 	return ""
 }
 
-func (x *CreateRequest) GetEmail() string {
+func (x *RegisterRequest) GetFullName() string {
+	if x != nil {
+		return x.FullName
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetEmail() string {
 	if x != nil {
 		return x.Email
 	}
 	return ""
 }
 
-type CreateResponse struct {
+func (x *RegisterRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+type RegisterResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	AccessToken   string                 `protobuf:"bytes,1,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
+	RefreshToken  string                 `protobuf:"bytes,2,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateResponse) Reset() {
-	*x = CreateResponse{}
+func (x *RegisterResponse) Reset() {
+	*x = RegisterResponse{}
 	mi := &file_auth_v1_auth_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateResponse) String() string {
+func (x *RegisterResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateResponse) ProtoMessage() {}
+func (*RegisterResponse) ProtoMessage() {}
 
-func (x *CreateResponse) ProtoReflect() protoreflect.Message {
+func (x *RegisterResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_auth_v1_auth_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -106,31 +125,49 @@ func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
-func (*CreateResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use RegisterResponse.ProtoReflect.Descriptor instead.
+func (*RegisterResponse) Descriptor() ([]byte, []int) {
 	return file_auth_v1_auth_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateResponse) GetUserId() string {
+func (x *RegisterResponse) GetAccessToken() string {
 	if x != nil {
-		return x.UserId
+		return x.AccessToken
 	}
 	return ""
+}
+
+func (x *RegisterResponse) GetRefreshToken() string {
+	if x != nil {
+		return x.RefreshToken
+	}
+	return ""
+}
+
+func (x *RegisterResponse) GetExpiresAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return nil
 }
 
 var File_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_auth_v1_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x12auth/v1/auth.proto\x12\x1btennisy.com.mvp.api.auth.v1\x1a\x1cgoogle/api/annotations.proto\"9\n" +
-	"\rCreateRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
-	"\x05email\x18\x02 \x01(\tR\x05email\")\n" +
-	"\x0eCreateResponse\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId2\x80\x01\n" +
-	"\x04Auth\x12x\n" +
-	"\x06Create\x12*.tennisy.com.mvp.api.auth.v1.CreateRequest\x1a+.tennisy.com.mvp.api.auth.v1.CreateResponse\"\x15\x82\xd3\xe4\x93\x02\x0f:\x01*\"\n" +
-	"/v1/createB(Z&tennisy.com/mvp/pkg/api/auth/v1;authv1b\x06proto3"
+	"\x12auth/v1/auth.proto\x12\x1btennisy.com.mvp.api.auth.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"}\n" +
+	"\x0fRegisterRequest\x12\x1b\n" +
+	"\tuser_name\x18\x01 \x01(\tR\buserName\x12\x1b\n" +
+	"\tfull_name\x18\x02 \x01(\tR\bfullName\x12\x14\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x1a\n" +
+	"\bpassword\x18\x04 \x01(\tR\bpassword\"\x95\x01\n" +
+	"\x10RegisterResponse\x12!\n" +
+	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
+	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x129\n" +
+	"\n" +
+	"expires_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt2\x89\x01\n" +
+	"\x04Auth\x12\x80\x01\n" +
+	"\bRegister\x12,.tennisy.com.mvp.api.auth.v1.RegisterRequest\x1a-.tennisy.com.mvp.api.auth.v1.RegisterResponse\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/v1/registerB(Z&tennisy.com/mvp/pkg/api/auth/v1;authv1b\x06proto3"
 
 var (
 	file_auth_v1_auth_proto_rawDescOnce sync.Once
@@ -146,17 +183,19 @@ func file_auth_v1_auth_proto_rawDescGZIP() []byte {
 
 var file_auth_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_auth_v1_auth_proto_goTypes = []any{
-	(*CreateRequest)(nil),  // 0: tennisy.com.mvp.api.auth.v1.CreateRequest
-	(*CreateResponse)(nil), // 1: tennisy.com.mvp.api.auth.v1.CreateResponse
+	(*RegisterRequest)(nil),       // 0: tennisy.com.mvp.api.auth.v1.RegisterRequest
+	(*RegisterResponse)(nil),      // 1: tennisy.com.mvp.api.auth.v1.RegisterResponse
+	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
 }
 var file_auth_v1_auth_proto_depIdxs = []int32{
-	0, // 0: tennisy.com.mvp.api.auth.v1.Auth.Create:input_type -> tennisy.com.mvp.api.auth.v1.CreateRequest
-	1, // 1: tennisy.com.mvp.api.auth.v1.Auth.Create:output_type -> tennisy.com.mvp.api.auth.v1.CreateResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	2, // 0: tennisy.com.mvp.api.auth.v1.RegisterResponse.expires_at:type_name -> google.protobuf.Timestamp
+	0, // 1: tennisy.com.mvp.api.auth.v1.Auth.Register:input_type -> tennisy.com.mvp.api.auth.v1.RegisterRequest
+	1, // 2: tennisy.com.mvp.api.auth.v1.Auth.Register:output_type -> tennisy.com.mvp.api.auth.v1.RegisterResponse
+	2, // [2:3] is the sub-list for method output_type
+	1, // [1:2] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_auth_v1_auth_proto_init() }

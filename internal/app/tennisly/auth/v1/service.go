@@ -2,7 +2,7 @@ package auth
 
 import (
 	"tennisy.com/mvp/internal/modules/auth"
-	authv1 "tennisy.com/mvp/pb/auth/v1"
+	authv1 "tennisy.com/mvp/pb/api/auth/v1"
 )
 
 // Implementation is a Route implementation

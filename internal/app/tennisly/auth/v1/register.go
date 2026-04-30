@@ -5,7 +5,8 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"tennisy.com/mvp/internal/modules/auth/action/register/dto"
-	authv1 "tennisy.com/mvp/pb/auth/v1"
+	authv1 "tennisy.com/mvp/pb/api/auth/v1"
+	common_token "tennisy.com/mvp/pb/api/common/token"
 )
 
 func (i *Implementation) Register(ctx context.Context, req *authv1.RegisterRequest) (resp *authv1.RegisterResponse, err error) {
@@ -19,8 +20,10 @@ func (i *Implementation) Register(ctx context.Context, req *authv1.RegisterReque
 		return nil, err
 	}
 	return &authv1.RegisterResponse{
-		AccessToken:  tokenResp.AccessToken,
-		RefreshToken: tokenResp.RefreshToken,
-		ExpiresAt:    timestamppb.New(tokenResp.ExpiresAt),
+		TokenPair: &common_token.TokenPair{
+			AccessToken:  tokenResp.AccessToken,
+			RefreshToken: tokenResp.RefreshToken,
+			ExpiresAt:    timestamppb.New(tokenResp.ExpiresAt),
+		},
 	}, nil
 }

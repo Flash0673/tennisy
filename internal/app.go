@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
 	authController "tennisy.com/mvp/internal/app/tennisly/auth/v1"
-	authv1 "tennisy.com/mvp/pb/auth/v1"
+	authv1 "tennisy.com/mvp/pb/api/auth/v1"
 
 	"tennisy.com/mvp/internal/modules/auth"
 )
@@ -96,7 +96,9 @@ func (a *App) runGRPC() error {
 
 // runPublicHTTP is called in New function
 func (a *App) runPublicHTTP(ctx context.Context) error {
-	mux := runtime.NewServeMux()
+	mux := runtime.NewServeMux(
+		runtime.WithMiddlewares(),
+	)
 
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),

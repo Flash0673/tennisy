@@ -1,16 +1,29 @@
 syntax = "proto3";
 
 package tennisy.com.mvp.api.auth.v1;
+option go_package = "tennisy.com/mvp/pb/api/auth/v1;authv1";
 
 import "google/api/annotations.proto";
-import "google/protobuf/timestamp.proto";
-
-option go_package = "tennisy.com/mvp/pkg/api/auth/v1;authv1";
+import "api/common/token/token.proto";
 
 service Auth {
   rpc Register(RegisterRequest) returns (RegisterResponse) {
     option (google.api.http) = {
       post: "/v1/register"
+      body: "*"
+    };
+  };
+
+  rpc LogIn(LogInRequest) returns (LogInResponse) {
+    option (google.api.http) = {
+      post: "/v1/login"
+      body: "*"
+    };
+  };
+
+  rpc Refresh(RefreshRequest) returns (RefreshResponse) {
+    option (google.api.http) = {
+      post: "/v1/refresh"
       body: "*"
     };
   };
@@ -24,7 +37,22 @@ message RegisterRequest {
 }
 
 message RegisterResponse {
-  string access_token = 1;
-  string refresh_token = 2;
-  google.protobuf.Timestamp expires_at = 3;
+ common.token.TokenPair token_pair = 1;
+}
+
+message LogInRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LogInResponse {
+  common.token.TokenPair token_pair = 1;
+}
+
+message RefreshRequest {
+  string refresh_token = 1;
+}
+
+message RefreshResponse {
+  common.token.TokenPair token_pair = 1;
 }

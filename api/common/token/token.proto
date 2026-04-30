@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package tennisy.com.mvp.api.common.token;
+option go_package = "tennisy.com/mvp/pb/api/common/token;common_token";
+
+import "google/protobuf/timestamp.proto";
+
+
+message TokenPair {
+  string access_token = 1;
+  string refresh_token = 2;
+  google.protobuf.Timestamp expires_at = 3;
+}

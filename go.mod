@@ -12,6 +12,7 @@ require (
 	github.com/kenshaw/inflector v0.3.0
 	github.com/kenshaw/snaker v0.4.3
 	github.com/samber/lo v1.53.0
+	github.com/stretchr/testify v1.11.1
 	github.com/xo/dbtpl v1.1.0
 	go.uber.org/mock v0.6.0
 	golang.org/x/crypto v0.50.0

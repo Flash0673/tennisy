@@ -13,8 +13,8 @@ bin-deps:
 
 .PRONY: generate
 generate:
-	mkdir -p pb/
-	protoc -I=vendor.protogen --proto_path=api \
+	mkdir -p pb
+	protoc -I=vendor.protogen -I=.\
     	--go_out=pb \
     	--go_opt paths=source_relative \
     	--plugin=protoc-gen-go=bin/protoc-gen-go \
@@ -27,7 +27,8 @@ generate:
     	--plugin=protoc-gen-grpc-gateway=bin/protoc-gen-grpc-gateway \
     	--openapiv2_out=pb --openapiv2_opt logtostderr=true \
     	--plugin=protoc-gen-openapiv2=bin/protoc-gen-openapiv2 \
-    	api/auth/v1/auth.proto
+    	api/auth/v1/auth.proto \
+    	api/common/token/token.proto
 
 .PRONY: vendor-proto
 vendor-proto:

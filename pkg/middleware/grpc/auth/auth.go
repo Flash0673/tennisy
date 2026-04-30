@@ -24,7 +24,7 @@ type Parser interface {
 	Parse(token string) (string, error)
 }
 
-func NewAuthMiddleware(parser Parser) func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+func NewAuthInterceptor(parser Parser) func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 
 		// Проверяем URL запроса
@@ -50,7 +50,7 @@ func NewAuthMiddleware(parser Parser) func(ctx context.Context, req interface{},
 		if err != nil {
 			return nil, status.Errorf(codes.Unauthenticated, "invalid token")
 		}
-		ctx = metadata.NewOutgoingContext(ctx, metadata.Pairs("user_id", uid))
+		ctx = context.WithValue(ctx, "user_id", uid)
 		return handler(ctx, req)
 	}
 }

@@ -15,11 +15,12 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
 	authController "tennisly.com/mvp/internal/app/tennisly/auth/v1"
-	authv1 "tennisly.com/mvp/pb/api/auth/v1"
-	"tennisly.com/mvp/pkg/token"
-
 	"tennisly.com/mvp/internal/modules/auth"
+	authv1 "tennisly.com/mvp/pb/api/auth/v1"
 	authInterceptor "tennisly.com/mvp/pkg/middleware/grpc/auth"
+	authMiddleware "tennisly.com/mvp/pkg/middleware/http/auth"
+	metadataInterceptor "tennisly.com/mvp/pkg/middleware/metadata"
+	"tennisly.com/mvp/pkg/token"
 )
 
 const (
@@ -81,7 +82,8 @@ func (a *App) runGRPC() error {
 	grpcServer := grpc.NewServer(
 		grpc.Creds(insecure.NewCredentials()),
 		grpc.ChainUnaryInterceptor(
-			authInterceptor.NewAuthMiddleware(token.NewJWTService("", 24*time.Hour)),
+			//authInterceptor.NewAuthInterceptor(token.NewJWTService("", 24*time.Hour)),
+			authInterceptor.UserContextInterceptor,
 		),
 	)
 
@@ -102,7 +104,12 @@ func (a *App) runGRPC() error {
 
 // runPublicHTTP is called in New function
 func (a *App) runPublicHTTP(ctx context.Context) error {
-	mux := runtime.NewServeMux()
+	mux := runtime.NewServeMux(
+		runtime.WithMiddlewares(
+			authMiddleware.NewAuthMiddleware(token.NewJWTService("", 24*time.Hour)),
+		),
+		runtime.WithMetadata(metadataInterceptor.UserMetadata),
+	)
 
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),

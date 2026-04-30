@@ -6,6 +6,7 @@ import (
 	"net"
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -15,8 +16,10 @@ import (
 	"google.golang.org/grpc/reflection"
 	authController "tennisly.com/mvp/internal/app/tennisly/auth/v1"
 	authv1 "tennisly.com/mvp/pb/api/auth/v1"
+	"tennisly.com/mvp/pkg/token"
 
 	"tennisly.com/mvp/internal/modules/auth"
+	authInterceptor "tennisly.com/mvp/pkg/middleware/grpc/auth"
 )
 
 const (
@@ -77,6 +80,9 @@ func (a *App) Run(ctx context.Context) {
 func (a *App) runGRPC() error {
 	grpcServer := grpc.NewServer(
 		grpc.Creds(insecure.NewCredentials()),
+		grpc.ChainUnaryInterceptor(
+			authInterceptor.NewAuthMiddleware(token.NewJWTService("", 24*time.Hour)),
+		),
 	)
 
 	reflection.Register(grpcServer)
@@ -96,9 +102,7 @@ func (a *App) runGRPC() error {
 
 // runPublicHTTP is called in New function
 func (a *App) runPublicHTTP(ctx context.Context) error {
-	mux := runtime.NewServeMux(
-		runtime.WithMiddlewares(),
-	)
+	mux := runtime.NewServeMux()
 
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),

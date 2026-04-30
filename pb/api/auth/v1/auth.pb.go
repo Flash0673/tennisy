@@ -319,6 +319,42 @@ func (x *RefreshResponse) GetTokenPair() *token.TokenPair {
 	return nil
 }
 
+type DummyMsg struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DummyMsg) Reset() {
+	*x = DummyMsg{}
+	mi := &file_api_auth_v1_auth_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DummyMsg) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DummyMsg) ProtoMessage() {}
+
+func (x *DummyMsg) ProtoReflect() protoreflect.Message {
+	mi := &file_api_auth_v1_auth_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DummyMsg.ProtoReflect.Descriptor instead.
+func (*DummyMsg) Descriptor() ([]byte, []int) {
+	return file_api_auth_v1_auth_proto_rawDescGZIP(), []int{6}
+}
+
 var File_api_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_api_auth_v1_auth_proto_rawDesc = "" +
@@ -342,11 +378,14 @@ const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"^\n" +
 	"\x0fRefreshResponse\x12K\n" +
 	"\n" +
-	"token_pair\x18\x01 \x01(\v2,.tennisly.com.mvp.api.common.token.TokenPairR\ttokenPair2\x83\x03\n" +
+	"token_pair\x18\x01 \x01(\v2,.tennisly.com.mvp.api.common.token.TokenPairR\ttokenPair\"\n" +
+	"\n" +
+	"\bDummyMsg2\xf2\x03\n" +
 	"\x04Auth\x12\x82\x01\n" +
 	"\bRegister\x12-.tennisly.com.mvp.api.auth.v1.RegisterRequest\x1a..tennisly.com.mvp.api.auth.v1.RegisterResponse\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/v1/register\x12v\n" +
 	"\x05LogIn\x12*.tennisly.com.mvp.api.auth.v1.LogInRequest\x1a+.tennisly.com.mvp.api.auth.v1.LogInResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/v1/login\x12~\n" +
-	"\aRefresh\x12,.tennisly.com.mvp.api.auth.v1.RefreshRequest\x1a-.tennisly.com.mvp.api.auth.v1.RefreshResponse\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/v1/refreshB(Z&tennisly.com/mvp/pb/api/auth/v1;authv1b\x06proto3"
+	"\aRefresh\x12,.tennisly.com.mvp.api.auth.v1.RefreshRequest\x1a-.tennisly.com.mvp.api.auth.v1.RefreshResponse\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/v1/refresh\x12m\n" +
+	"\x05Dummy\x12&.tennisly.com.mvp.api.auth.v1.DummyMsg\x1a&.tennisly.com.mvp.api.auth.v1.DummyMsg\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/v1/dummyB(Z&tennisly.com/mvp/pb/api/auth/v1;authv1b\x06proto3"
 
 var (
 	file_api_auth_v1_auth_proto_rawDescOnce sync.Once
@@ -360,7 +399,7 @@ func file_api_auth_v1_auth_proto_rawDescGZIP() []byte {
 	return file_api_auth_v1_auth_proto_rawDescData
 }
 
-var file_api_auth_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_api_auth_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_api_auth_v1_auth_proto_goTypes = []any{
 	(*RegisterRequest)(nil),  // 0: tennisly.com.mvp.api.auth.v1.RegisterRequest
 	(*RegisterResponse)(nil), // 1: tennisly.com.mvp.api.auth.v1.RegisterResponse
@@ -368,20 +407,23 @@ var file_api_auth_v1_auth_proto_goTypes = []any{
 	(*LogInResponse)(nil),    // 3: tennisly.com.mvp.api.auth.v1.LogInResponse
 	(*RefreshRequest)(nil),   // 4: tennisly.com.mvp.api.auth.v1.RefreshRequest
 	(*RefreshResponse)(nil),  // 5: tennisly.com.mvp.api.auth.v1.RefreshResponse
-	(*token.TokenPair)(nil),  // 6: tennisly.com.mvp.api.common.token.TokenPair
+	(*DummyMsg)(nil),         // 6: tennisly.com.mvp.api.auth.v1.DummyMsg
+	(*token.TokenPair)(nil),  // 7: tennisly.com.mvp.api.common.token.TokenPair
 }
 var file_api_auth_v1_auth_proto_depIdxs = []int32{
-	6, // 0: tennisly.com.mvp.api.auth.v1.RegisterResponse.token_pair:type_name -> tennisly.com.mvp.api.common.token.TokenPair
-	6, // 1: tennisly.com.mvp.api.auth.v1.LogInResponse.token_pair:type_name -> tennisly.com.mvp.api.common.token.TokenPair
-	6, // 2: tennisly.com.mvp.api.auth.v1.RefreshResponse.token_pair:type_name -> tennisly.com.mvp.api.common.token.TokenPair
+	7, // 0: tennisly.com.mvp.api.auth.v1.RegisterResponse.token_pair:type_name -> tennisly.com.mvp.api.common.token.TokenPair
+	7, // 1: tennisly.com.mvp.api.auth.v1.LogInResponse.token_pair:type_name -> tennisly.com.mvp.api.common.token.TokenPair
+	7, // 2: tennisly.com.mvp.api.auth.v1.RefreshResponse.token_pair:type_name -> tennisly.com.mvp.api.common.token.TokenPair
 	0, // 3: tennisly.com.mvp.api.auth.v1.Auth.Register:input_type -> tennisly.com.mvp.api.auth.v1.RegisterRequest
 	2, // 4: tennisly.com.mvp.api.auth.v1.Auth.LogIn:input_type -> tennisly.com.mvp.api.auth.v1.LogInRequest
 	4, // 5: tennisly.com.mvp.api.auth.v1.Auth.Refresh:input_type -> tennisly.com.mvp.api.auth.v1.RefreshRequest
-	1, // 6: tennisly.com.mvp.api.auth.v1.Auth.Register:output_type -> tennisly.com.mvp.api.auth.v1.RegisterResponse
-	3, // 7: tennisly.com.mvp.api.auth.v1.Auth.LogIn:output_type -> tennisly.com.mvp.api.auth.v1.LogInResponse
-	5, // 8: tennisly.com.mvp.api.auth.v1.Auth.Refresh:output_type -> tennisly.com.mvp.api.auth.v1.RefreshResponse
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
+	6, // 6: tennisly.com.mvp.api.auth.v1.Auth.Dummy:input_type -> tennisly.com.mvp.api.auth.v1.DummyMsg
+	1, // 7: tennisly.com.mvp.api.auth.v1.Auth.Register:output_type -> tennisly.com.mvp.api.auth.v1.RegisterResponse
+	3, // 8: tennisly.com.mvp.api.auth.v1.Auth.LogIn:output_type -> tennisly.com.mvp.api.auth.v1.LogInResponse
+	5, // 9: tennisly.com.mvp.api.auth.v1.Auth.Refresh:output_type -> tennisly.com.mvp.api.auth.v1.RefreshResponse
+	6, // 10: tennisly.com.mvp.api.auth.v1.Auth.Dummy:output_type -> tennisly.com.mvp.api.auth.v1.DummyMsg
+	7, // [7:11] is the sub-list for method output_type
+	3, // [3:7] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
 	3, // [3:3] is the sub-list for extension extendee
 	0, // [0:3] is the sub-list for field type_name
@@ -398,7 +440,7 @@ func file_api_auth_v1_auth_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_auth_v1_auth_proto_rawDesc), len(file_api_auth_v1_auth_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

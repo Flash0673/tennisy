@@ -27,6 +27,13 @@ service Auth {
       body: "*"
     };
   };
+
+  rpc Dummy(DummyMsg) returns (DummyMsg) {
+    option (google.api.http) = {
+      post: "/v1/dummy"
+      body: "*"
+    };
+  };
 }
 
 message RegisterRequest {
@@ -55,4 +62,8 @@ message RefreshRequest {
 
 message RefreshResponse {
   common.token.TokenPair token_pair = 1;
+}
+
+message DummyMsg {
+
 }

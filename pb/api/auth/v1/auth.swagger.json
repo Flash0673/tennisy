@@ -16,6 +16,38 @@
     "application/json"
   ],
   "paths": {
+    "/v1/dummy": {
+      "post": {
+        "operationId": "Auth_Dummy",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DummyMsg"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DummyMsg"
+            }
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
     "/v1/login": {
       "post": {
         "operationId": "Auth_LogIn",
@@ -156,6 +188,9 @@
           "format": "date-time"
         }
       }
+    },
+    "v1DummyMsg": {
+      "type": "object"
     },
     "v1LogInRequest": {
       "type": "object",

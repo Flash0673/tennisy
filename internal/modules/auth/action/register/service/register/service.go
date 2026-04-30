@@ -6,10 +6,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/lo"
-	"tennisy.com/mvp/internal/modules/auth/action/register/dto"
-	"tennisy.com/mvp/internal/modules/auth/domain/refresh_token"
-	"tennisy.com/mvp/internal/modules/auth/domain/user"
-	dtoToken "tennisy.com/mvp/pkg/token/dto"
+	"tennisly.com/mvp/internal/modules/auth/action/register/dto"
+	"tennisly.com/mvp/internal/modules/auth/domain/refresh_token"
+	"tennisly.com/mvp/internal/modules/auth/domain/user"
+	dtoToken "tennisly.com/mvp/pkg/token/dto"
 )
 
 //go:generate mockgen -destination=mocks/mocks.go -package=mocks . PasswordHasher,TokenService,RefreshTokenRepository,UserRepository

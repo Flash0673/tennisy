@@ -2,8 +2,8 @@ package dal
 
 import (
 	"github.com/jackc/pgx/v5/pgxpool"
-	"tennisy.com/mvp/internal/modules/auth/dal/refresh_token"
-	"tennisy.com/mvp/internal/modules/auth/dal/user"
+	"tennisly.com/mvp/internal/modules/auth/dal/refresh_token"
+	"tennisly.com/mvp/internal/modules/auth/dal/user"
 )
 
 type Aggregator struct {

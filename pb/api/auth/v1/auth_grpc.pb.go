@@ -19,9 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Auth_Register_FullMethodName = "/tennisy.com.mvp.api.auth.v1.Auth/Register"
-	Auth_LogIn_FullMethodName    = "/tennisy.com.mvp.api.auth.v1.Auth/LogIn"
-	Auth_Refresh_FullMethodName  = "/tennisy.com.mvp.api.auth.v1.Auth/Refresh"
+	Auth_Register_FullMethodName = "/tennisly.com.mvp.api.auth.v1.Auth/Register"
+	Auth_LogIn_FullMethodName    = "/tennisly.com.mvp.api.auth.v1.Auth/LogIn"
+	Auth_Refresh_FullMethodName  = "/tennisly.com.mvp.api.auth.v1.Auth/Refresh"
 )
 
 // AuthClient is the client API for Auth service.
@@ -176,7 +176,7 @@ func _Auth_Refresh_Handler(srv interface{}, ctx context.Context, dec func(interf
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Auth_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "tennisy.com.mvp.api.auth.v1.Auth",
+	ServiceName: "tennisly.com.mvp.api.auth.v1.Auth",
 	HandlerType: (*AuthServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

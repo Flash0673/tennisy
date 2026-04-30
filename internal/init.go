@@ -8,7 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"tennisy.com/mvp/internal/modules/auth"
+	"tennisly.com/mvp/internal/modules/auth"
 )
 
 func (a *App) initModules(_ context.Context) *App {

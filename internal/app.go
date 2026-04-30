@@ -13,10 +13,10 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
-	authController "tennisy.com/mvp/internal/app/tennisly/auth/v1"
-	authv1 "tennisy.com/mvp/pb/api/auth/v1"
+	authController "tennisly.com/mvp/internal/app/tennisly/auth/v1"
+	authv1 "tennisly.com/mvp/pb/api/auth/v1"
 
-	"tennisy.com/mvp/internal/modules/auth"
+	"tennisly.com/mvp/internal/modules/auth"
 )
 
 const (

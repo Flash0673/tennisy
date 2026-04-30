@@ -86,12 +86,12 @@ var File_api_common_token_token_proto protoreflect.FileDescriptor
 
 const file_api_common_token_token_proto_rawDesc = "" +
 	"\n" +
-	"\x1capi/common/token/token.proto\x12 tennisy.com.mvp.api.common.token\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8e\x01\n" +
+	"\x1capi/common/token/token.proto\x12!tennisly.com.mvp.api.common.token\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8e\x01\n" +
 	"\tTokenPair\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x129\n" +
 	"\n" +
-	"expires_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAtB2Z0tennisy.com/mvp/pb/api/common/token;common_tokenb\x06proto3"
+	"expires_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAtB3Z1tennisly.com/mvp/pb/api/common/token;common_tokenb\x06proto3"
 
 var (
 	file_api_common_token_token_proto_rawDescOnce sync.Once
@@ -107,11 +107,11 @@ func file_api_common_token_token_proto_rawDescGZIP() []byte {
 
 var file_api_common_token_token_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_api_common_token_token_proto_goTypes = []any{
-	(*TokenPair)(nil),             // 0: tennisy.com.mvp.api.common.token.TokenPair
+	(*TokenPair)(nil),             // 0: tennisly.com.mvp.api.common.token.TokenPair
 	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
 }
 var file_api_common_token_token_proto_depIdxs = []int32{
-	1, // 0: tennisy.com.mvp.api.common.token.TokenPair.expires_at:type_name -> google.protobuf.Timestamp
+	1, // 0: tennisly.com.mvp.api.common.token.TokenPair.expires_at:type_name -> google.protobuf.Timestamp
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

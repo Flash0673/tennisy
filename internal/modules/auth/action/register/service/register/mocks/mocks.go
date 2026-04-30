@@ -14,9 +14,9 @@ import (
 	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
-	refresh_token "tennisy.com/mvp/internal/modules/auth/domain/refresh_token"
-	user "tennisy.com/mvp/internal/modules/auth/domain/user"
-	dto "tennisy.com/mvp/pkg/token/dto"
+	refresh_token "tennisly.com/mvp/internal/modules/auth/domain/refresh_token"
+	user "tennisly.com/mvp/internal/modules/auth/domain/user"
+	dto "tennisly.com/mvp/pkg/token/dto"
 )
 
 // MockPasswordHasher is a mock of PasswordHasher interface.

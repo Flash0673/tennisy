@@ -5,11 +5,11 @@ import (
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
-	"tennisy.com/mvp/internal/modules/auth/action/register/dto"
-	"tennisy.com/mvp/internal/modules/auth/action/register/service/register"
-	"tennisy.com/mvp/internal/modules/auth/dal"
-	"tennisy.com/mvp/pkg/security"
-	"tennisy.com/mvp/pkg/token"
+	"tennisly.com/mvp/internal/modules/auth/action/register/dto"
+	"tennisly.com/mvp/internal/modules/auth/action/register/service/register"
+	"tennisly.com/mvp/internal/modules/auth/dal"
+	"tennisly.com/mvp/pkg/security"
+	"tennisly.com/mvp/pkg/token"
 )
 
 type Action struct {

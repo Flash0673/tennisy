@@ -12,7 +12,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	token "tennisy.com/mvp/pb/api/common/token"
+	token "tennisly.com/mvp/pb/api/common/token"
 	unsafe "unsafe"
 )
 
@@ -323,30 +323,30 @@ var File_api_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_api_auth_v1_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x16api/auth/v1/auth.proto\x12\x1btennisy.com.mvp.api.auth.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1capi/common/token/token.proto\"}\n" +
+	"\x16api/auth/v1/auth.proto\x12\x1ctennisly.com.mvp.api.auth.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1capi/common/token/token.proto\"}\n" +
 	"\x0fRegisterRequest\x12\x1b\n" +
 	"\tuser_name\x18\x01 \x01(\tR\buserName\x12\x1b\n" +
 	"\tfull_name\x18\x02 \x01(\tR\bfullName\x12\x14\n" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x04 \x01(\tR\bpassword\"^\n" +
-	"\x10RegisterResponse\x12J\n" +
+	"\bpassword\x18\x04 \x01(\tR\bpassword\"_\n" +
+	"\x10RegisterResponse\x12K\n" +
 	"\n" +
-	"token_pair\x18\x01 \x01(\v2+.tennisy.com.mvp.api.common.token.TokenPairR\ttokenPair\"@\n" +
+	"token_pair\x18\x01 \x01(\v2,.tennisly.com.mvp.api.common.token.TokenPairR\ttokenPair\"@\n" +
 	"\fLogInRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"[\n" +
-	"\rLogInResponse\x12J\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"\\\n" +
+	"\rLogInResponse\x12K\n" +
 	"\n" +
-	"token_pair\x18\x01 \x01(\v2+.tennisy.com.mvp.api.common.token.TokenPairR\ttokenPair\"5\n" +
+	"token_pair\x18\x01 \x01(\v2,.tennisly.com.mvp.api.common.token.TokenPairR\ttokenPair\"5\n" +
 	"\x0eRefreshRequest\x12#\n" +
-	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"]\n" +
-	"\x0fRefreshResponse\x12J\n" +
+	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"^\n" +
+	"\x0fRefreshResponse\x12K\n" +
 	"\n" +
-	"token_pair\x18\x01 \x01(\v2+.tennisy.com.mvp.api.common.token.TokenPairR\ttokenPair2\xfd\x02\n" +
-	"\x04Auth\x12\x80\x01\n" +
-	"\bRegister\x12,.tennisy.com.mvp.api.auth.v1.RegisterRequest\x1a-.tennisy.com.mvp.api.auth.v1.RegisterResponse\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/v1/register\x12t\n" +
-	"\x05LogIn\x12).tennisy.com.mvp.api.auth.v1.LogInRequest\x1a*.tennisy.com.mvp.api.auth.v1.LogInResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/v1/login\x12|\n" +
-	"\aRefresh\x12+.tennisy.com.mvp.api.auth.v1.RefreshRequest\x1a,.tennisy.com.mvp.api.auth.v1.RefreshResponse\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/v1/refreshB'Z%tennisy.com/mvp/pb/api/auth/v1;authv1b\x06proto3"
+	"token_pair\x18\x01 \x01(\v2,.tennisly.com.mvp.api.common.token.TokenPairR\ttokenPair2\x83\x03\n" +
+	"\x04Auth\x12\x82\x01\n" +
+	"\bRegister\x12-.tennisly.com.mvp.api.auth.v1.RegisterRequest\x1a..tennisly.com.mvp.api.auth.v1.RegisterResponse\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/v1/register\x12v\n" +
+	"\x05LogIn\x12*.tennisly.com.mvp.api.auth.v1.LogInRequest\x1a+.tennisly.com.mvp.api.auth.v1.LogInResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/v1/login\x12~\n" +
+	"\aRefresh\x12,.tennisly.com.mvp.api.auth.v1.RefreshRequest\x1a-.tennisly.com.mvp.api.auth.v1.RefreshResponse\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/v1/refreshB(Z&tennisly.com/mvp/pb/api/auth/v1;authv1b\x06proto3"
 
 var (
 	file_api_auth_v1_auth_proto_rawDescOnce sync.Once
@@ -362,24 +362,24 @@ func file_api_auth_v1_auth_proto_rawDescGZIP() []byte {
 
 var file_api_auth_v1_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_api_auth_v1_auth_proto_goTypes = []any{
-	(*RegisterRequest)(nil),  // 0: tennisy.com.mvp.api.auth.v1.RegisterRequest
-	(*RegisterResponse)(nil), // 1: tennisy.com.mvp.api.auth.v1.RegisterResponse
-	(*LogInRequest)(nil),     // 2: tennisy.com.mvp.api.auth.v1.LogInRequest
-	(*LogInResponse)(nil),    // 3: tennisy.com.mvp.api.auth.v1.LogInResponse
-	(*RefreshRequest)(nil),   // 4: tennisy.com.mvp.api.auth.v1.RefreshRequest
-	(*RefreshResponse)(nil),  // 5: tennisy.com.mvp.api.auth.v1.RefreshResponse
-	(*token.TokenPair)(nil),  // 6: tennisy.com.mvp.api.common.token.TokenPair
+	(*RegisterRequest)(nil),  // 0: tennisly.com.mvp.api.auth.v1.RegisterRequest
+	(*RegisterResponse)(nil), // 1: tennisly.com.mvp.api.auth.v1.RegisterResponse
+	(*LogInRequest)(nil),     // 2: tennisly.com.mvp.api.auth.v1.LogInRequest
+	(*LogInResponse)(nil),    // 3: tennisly.com.mvp.api.auth.v1.LogInResponse
+	(*RefreshRequest)(nil),   // 4: tennisly.com.mvp.api.auth.v1.RefreshRequest
+	(*RefreshResponse)(nil),  // 5: tennisly.com.mvp.api.auth.v1.RefreshResponse
+	(*token.TokenPair)(nil),  // 6: tennisly.com.mvp.api.common.token.TokenPair
 }
 var file_api_auth_v1_auth_proto_depIdxs = []int32{
-	6, // 0: tennisy.com.mvp.api.auth.v1.RegisterResponse.token_pair:type_name -> tennisy.com.mvp.api.common.token.TokenPair
-	6, // 1: tennisy.com.mvp.api.auth.v1.LogInResponse.token_pair:type_name -> tennisy.com.mvp.api.common.token.TokenPair
-	6, // 2: tennisy.com.mvp.api.auth.v1.RefreshResponse.token_pair:type_name -> tennisy.com.mvp.api.common.token.TokenPair
-	0, // 3: tennisy.com.mvp.api.auth.v1.Auth.Register:input_type -> tennisy.com.mvp.api.auth.v1.RegisterRequest
-	2, // 4: tennisy.com.mvp.api.auth.v1.Auth.LogIn:input_type -> tennisy.com.mvp.api.auth.v1.LogInRequest
-	4, // 5: tennisy.com.mvp.api.auth.v1.Auth.Refresh:input_type -> tennisy.com.mvp.api.auth.v1.RefreshRequest
-	1, // 6: tennisy.com.mvp.api.auth.v1.Auth.Register:output_type -> tennisy.com.mvp.api.auth.v1.RegisterResponse
-	3, // 7: tennisy.com.mvp.api.auth.v1.Auth.LogIn:output_type -> tennisy.com.mvp.api.auth.v1.LogInResponse
-	5, // 8: tennisy.com.mvp.api.auth.v1.Auth.Refresh:output_type -> tennisy.com.mvp.api.auth.v1.RefreshResponse
+	6, // 0: tennisly.com.mvp.api.auth.v1.RegisterResponse.token_pair:type_name -> tennisly.com.mvp.api.common.token.TokenPair
+	6, // 1: tennisly.com.mvp.api.auth.v1.LogInResponse.token_pair:type_name -> tennisly.com.mvp.api.common.token.TokenPair
+	6, // 2: tennisly.com.mvp.api.auth.v1.RefreshResponse.token_pair:type_name -> tennisly.com.mvp.api.common.token.TokenPair
+	0, // 3: tennisly.com.mvp.api.auth.v1.Auth.Register:input_type -> tennisly.com.mvp.api.auth.v1.RegisterRequest
+	2, // 4: tennisly.com.mvp.api.auth.v1.Auth.LogIn:input_type -> tennisly.com.mvp.api.auth.v1.LogInRequest
+	4, // 5: tennisly.com.mvp.api.auth.v1.Auth.Refresh:input_type -> tennisly.com.mvp.api.auth.v1.RefreshRequest
+	1, // 6: tennisly.com.mvp.api.auth.v1.Auth.Register:output_type -> tennisly.com.mvp.api.auth.v1.RegisterResponse
+	3, // 7: tennisly.com.mvp.api.auth.v1.Auth.LogIn:output_type -> tennisly.com.mvp.api.auth.v1.LogInResponse
+	5, // 8: tennisly.com.mvp.api.auth.v1.Auth.Refresh:output_type -> tennisly.com.mvp.api.auth.v1.RefreshResponse
 	6, // [6:9] is the sub-list for method output_type
 	3, // [3:6] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

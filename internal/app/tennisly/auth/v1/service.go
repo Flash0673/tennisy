@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"tennisy.com/mvp/internal/modules/auth"
-	authv1 "tennisy.com/mvp/pb/api/auth/v1"
+	"tennisly.com/mvp/internal/modules/auth"
+	authv1 "tennisly.com/mvp/pb/api/auth/v1"
 )
 
 // Implementation is a Route implementation

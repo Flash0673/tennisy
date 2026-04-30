@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"tennisy.com/mvp/internal/modules/auth/domain/refresh_token"
+	"tennisly.com/mvp/internal/modules/auth/domain/refresh_token"
 )
 
 type Repository struct {

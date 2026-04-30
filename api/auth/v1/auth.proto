@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package tennisy.com.mvp.api.auth.v1;
-option go_package = "tennisy.com/mvp/pb/api/auth/v1;authv1";
+package tennisly.com.mvp.api.auth.v1;
+option go_package = "tennisly.com/mvp/pb/api/auth/v1;authv1";
 
 import "google/api/annotations.proto";
 import "api/common/token/token.proto";

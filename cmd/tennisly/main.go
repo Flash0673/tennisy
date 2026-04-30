@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	"tennisy.com/mvp/internal"
+	"tennisly.com/mvp/internal"
 )
 
 func main() {
-	fmt.Println("tennisy")
+	fmt.Println("tennisly")
 
 	ctx := context.Background()
 

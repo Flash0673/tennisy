@@ -1,4 +1,4 @@
-module tennisy.com/mvp
+module tennisly.com/mvp
 
 go 1.25.0
 

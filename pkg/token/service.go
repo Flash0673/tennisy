@@ -6,7 +6,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
-	"tennisy.com/mvp/pkg/token/dto"
+	"tennisly.com/mvp/pkg/token/dto"
 )
 
 type JWTService struct {

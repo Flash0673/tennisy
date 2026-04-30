@@ -2,8 +2,8 @@ package dao
 
 import (
 	"github.com/samber/lo"
-	"tennisy.com/mvp/internal/modules/auth/domain/refresh_token"
-	"tennisy.com/mvp/internal/xo"
+	"tennisly.com/mvp/internal/modules/auth/domain/refresh_token"
+	"tennisly.com/mvp/internal/xo"
 )
 
 type RefreshTokenDAO struct {

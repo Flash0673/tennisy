@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	grpcAddress = "localhost:8082"
+	grpcAddress = "localhost:7002"
 	httpAddress = "localhost:8080"
 )
 

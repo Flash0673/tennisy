@@ -2,8 +2,11 @@ package user
 
 import (
 	"context"
+	"errors"
 	"time"
 
+	"github.com/georgysavva/scany/v2/pgxscan"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"tennisly.com/mvp/internal/modules/auth/domain/user"
 )
@@ -38,4 +41,23 @@ func (r *Repository) Create(ctx context.Context, user *user.User) error {
 	_, err := r.db.Exec(ctx, sql, args...)
 
 	return err
+}
+
+func (r *Repository) GetByEmail(ctx context.Context, email string) (*user.User, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	sql := `SELECT * FROM users WHERE email = $1`
+
+	usr := &user.User{}
+	err := pgxscan.Get(ctx, r.db, usr, sql, email)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			// TODO сделать обертку над ошибками
+			return nil, errors.New("user not found")
+		}
+		return nil, err
+	}
+
+	return usr, nil
 }

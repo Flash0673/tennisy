@@ -3,10 +3,8 @@ package auth
 import (
 	"context"
 
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"tennisly.com/mvp/internal/modules/auth/action/register/dto"
 	authv1 "tennisly.com/mvp/pb/api/auth/v1"
-	common_token "tennisly.com/mvp/pb/api/common/token"
 )
 
 func (i *Implementation) Register(ctx context.Context, req *authv1.RegisterRequest) (resp *authv1.RegisterResponse, err error) {
@@ -20,10 +18,6 @@ func (i *Implementation) Register(ctx context.Context, req *authv1.RegisterReque
 		return nil, err
 	}
 	return &authv1.RegisterResponse{
-		TokenPair: &common_token.TokenPair{
-			AccessToken:  tokenResp.AccessToken,
-			RefreshToken: tokenResp.RefreshToken,
-			ExpiresAt:    timestamppb.New(tokenResp.ExpiresAt),
-		},
+		TokenPair: TokenToPb(tokenResp),
 	}, nil
 }

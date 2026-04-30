@@ -1,12 +1,12 @@
-package register
+package login
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/samber/lo"
-	"tennisly.com/mvp/internal/modules/auth/action/register/dto"
+	"tennisly.com/mvp/internal/modules/auth/action/login/dto"
 	"tennisly.com/mvp/internal/modules/auth/domain/refresh_token"
 	"tennisly.com/mvp/internal/modules/auth/domain/user"
 	dtoModule "tennisly.com/mvp/internal/modules/auth/dto"
@@ -16,7 +16,7 @@ import (
 //go:generate mockgen -destination=mocks/mocks.go -package=mocks . PasswordHasher,TokenService,RefreshTokenRepository,UserRepository
 
 type PasswordHasher interface {
-	Hash(password string) (string, error)
+	Compare(password, hash string) bool
 }
 
 type TokenService interface {
@@ -28,7 +28,7 @@ type RefreshTokenRepository interface {
 }
 
 type UserRepository interface {
-	Create(ctx context.Context, user *user.User) error
+	GetByEmail(ctx context.Context, email string) (*user.User, error)
 }
 
 type Service struct {
@@ -52,26 +52,16 @@ func New(
 	}
 }
 
-// Register TODO разбить на 2 сервиса - отдельно юзер, отдельно токен и засунуть под транзакцию
-func (s *Service) Register(ctx context.Context, req dto.RegisterRequest) (*dtoModule.TokenResponse, error) {
-	hash, err := s.passwordHasher.Hash(req.Password)
+// Login TODO разбить на 2 сервиса - отдельно юзер, отдельно токен и засунуть под транзакцию
+func (s *Service) Login(ctx context.Context, req dto.LoginRequest) (*dtoModule.TokenResponse, error) {
+
+	usr, err := s.userRepository.GetByEmail(ctx, req.Email)
 	if err != nil {
 		return nil, err
 	}
 
-	usr := &user.User{
-		ID:           uuid.New(),
-		Email:        req.Email,
-		Username:     req.Username,
-		PasswordHash: hash,
-		FullName:     lo.ToPtr(req.FullName),
-		CreatedAt:    time.Now().UTC(),
-		LastLogin:    lo.ToPtr(time.Now()),
-		IsActive:     true,
-	}
-
-	if err := s.userRepository.Create(ctx, usr); err != nil {
-		return nil, err
+	if !s.passwordHasher.Compare(req.Password, usr.PasswordHash) {
+		return nil, errors.New("invalid password")
 	}
 
 	tokens, err := s.tokenService.Generate(

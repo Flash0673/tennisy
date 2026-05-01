@@ -2,7 +2,6 @@ package register
 
 import (
 	"context"
-	"time"
 
 	"golang.org/x/crypto/bcrypt"
 	"tennisly.com/mvp/internal/modules/auth/action/register/dto"
@@ -17,12 +16,11 @@ type Action struct {
 	register *register.Service
 }
 
-func New(aggregator *dal.Aggregator) *Action {
+func New(aggregator *dal.Aggregator, tokenService *token.JWTService) *Action {
 	return &Action{
 		register: register.New(
 			security.NewBcryptHasher(bcrypt.DefaultCost),
-			// TODO config
-			token.NewJWTService("", 24*time.Hour),
+			tokenService,
 			aggregator.User,
 			aggregator.RefreshToken,
 		),

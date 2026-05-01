@@ -9,9 +9,9 @@ import (
 )
 
 var whiteList = map[string]bool{
-	"v1/login":    true,
-	"v1/register": true,
-	"v1/refresh":  true,
+	"/v1/login":    true,
+	"/v1/register": true,
+	"/v1/refresh":  true,
 }
 
 type Parser interface {
@@ -23,6 +23,7 @@ func NewAuthMiddleware(parser Parser) func(next runtime.HandlerFunc) runtime.Han
 		return func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
 			if whiteList[r.URL.Path] {
 				next(w, r, pathParams)
+				return
 			}
 
 			// Example: Check if token exists

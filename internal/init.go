@@ -23,7 +23,7 @@ import (
 
 func (a *App) initModules(_ context.Context) *App {
 	a.modules = modules{
-		auth: auth.New(a.postgresConnPool),
+		auth: auth.New(a.postgresConnPool, a.tokenService),
 	}
 
 	return a
@@ -112,6 +112,7 @@ func (a *App) initGrpcServer(ctx context.Context) *App {
 }
 
 func (a *App) initServices(_ context.Context) *App {
+	// TODO config
 	a.tokenService = token.NewJWTService("", 24*time.Hour)
 	return a
 }

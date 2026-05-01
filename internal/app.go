@@ -6,20 +6,11 @@ import (
 	"net"
 	"net/http"
 	"sync"
-	"time"
 
-	"github.com/go-chi/chi/v5"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/reflection"
-	authController "tennisly.com/mvp/internal/app/tennisly/auth/v1"
 	"tennisly.com/mvp/internal/modules/auth"
-	authv1 "tennisly.com/mvp/pb/api/auth/v1"
-	authInterceptor "tennisly.com/mvp/pkg/middleware/grpc/auth"
-	authMiddleware "tennisly.com/mvp/pkg/middleware/http/auth"
-	metadataInterceptor "tennisly.com/mvp/pkg/middleware/metadata"
 	"tennisly.com/mvp/pkg/token"
 )
 
@@ -33,13 +24,14 @@ type modules struct {
 }
 
 type App struct {
-	publicServer chi.Router
-	adminServer  chi.Router
-	grpcServer   *grpc.Server
+	httpServer *runtime.ServeMux
+	grpcServer *grpc.Server
 
 	modules modules
 
 	postgresConnPool *pgxpool.Pool
+
+	tokenService *token.JWTService
 
 	// Всякие коннекшены
 }
@@ -49,7 +41,10 @@ func New(ctx context.Context) *App {
 	a := &App{}
 
 	a.initPostgres(ctx).
-		initModules(ctx)
+		initServices(ctx).
+		initModules(ctx).
+		initHttpServer(ctx).
+		initGrpcServer(ctx)
 
 	return a
 }
@@ -79,18 +74,6 @@ func (a *App) Run(ctx context.Context) {
 
 // runGRPC in called in Run function
 func (a *App) runGRPC() error {
-	grpcServer := grpc.NewServer(
-		grpc.Creds(insecure.NewCredentials()),
-		grpc.ChainUnaryInterceptor(
-			//authInterceptor.NewAuthInterceptor(token.NewJWTService("", 24*time.Hour)),
-			authInterceptor.UserContextInterceptor,
-		),
-	)
-
-	reflection.Register(grpcServer)
-
-	// Здесь регистрируем наши grpc контроллеры
-	authv1.RegisterAuthServer(grpcServer, authController.NewAuth(a.modules.auth))
 
 	list, err := net.Listen("tcp", grpcAddress)
 	if err != nil {
@@ -99,29 +82,13 @@ func (a *App) runGRPC() error {
 
 	log.Printf("gRPC server listening at %v\n", grpcAddress)
 
-	return grpcServer.Serve(list)
+	return a.grpcServer.Serve(list)
 }
 
 // runPublicHTTP is called in New function
-func (a *App) runPublicHTTP(ctx context.Context) error {
-	mux := runtime.NewServeMux(
-		runtime.WithMiddlewares(
-			authMiddleware.NewAuthMiddleware(token.NewJWTService("", 24*time.Hour)),
-		),
-		runtime.WithMetadata(metadataInterceptor.UserMetadata),
-	)
-
-	opts := []grpc.DialOption{
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
-	}
-
-	// Здесь регаем http ендпоинты
-	err := authv1.RegisterAuthHandlerFromEndpoint(ctx, mux, grpcAddress, opts)
-	if err != nil {
-		return err
-	}
+func (a *App) runPublicHTTP(_ context.Context) error {
 
 	log.Printf("http server listening at %v\n", httpAddress)
 
-	return http.ListenAndServe(httpAddress, mux)
+	return http.ListenAndServe(httpAddress, a.httpServer)
 }
